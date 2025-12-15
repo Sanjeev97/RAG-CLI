@@ -35,8 +35,8 @@ This project implements a **Retrieval-Augmented Generation (RAG)** system that r
 - ✅ Source attribution for generated responses
 - ✅ Confidence scoring for answers
 - ✅ Content guardrails for safe usage
-- ✅ **Intelligent query reformulation** - Detects ambiguous queries and asks for clarification
-- ✅ **Automatic query expansion** - Expands abbreviations and adds related terms
+- ✅ Intelligent query reformulation - Detects ambiguous queries and asks for clarification
+- ✅ Automatic query expansion - Expands abbreviations and adds related terms
 - ✅ Modular, maintainable codebase
 
 ---
