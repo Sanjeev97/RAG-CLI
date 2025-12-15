@@ -1,6 +1,6 @@
-numpy
-tqdm
-torch
-sentence-transformers
-faiss-cpu
-ctransformers
+numpy==2.2.6
+torch==2.9.1
+sentence-transformers==5.2.0
+faiss-cpu==1.13.1
+ctransformers==0.2.27
+tqdm==4.67.1
