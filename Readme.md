@@ -116,16 +116,15 @@ This project implements a **Retrieval-Augmented Generation (RAG)** system that r
 
 ## 🚀 Installation
 
-### Option 1: Automated Installation (Linux/Mac)
+### Option 1: Automated Installation (Windows)
 
 ```bash
 # Clone the repository
-git clone <your-repo-url>
-cd rag_project
+git clone https://github.com/Sanjeev97/RAG-CLI
+cd RAG-CLI
 
 # Run automated setup script
-chmod +x install.sh
-./install.sh
+bash setup_windows.sh
 ```
 
 ### Option 2: Manual Installation (Windows/All Platforms)
