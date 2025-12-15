@@ -181,7 +181,7 @@ PyYAML==6.0.3
 1. **TinyLlama-1.1B-Chat (GGUF)** - Fastest, 4-bit quantized (~600MB)
    ```bash
    # Download from HuggingFace
-   # https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF
+   # https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF](https://huggingface.co/TheBloke/TinyLlama-1.1B-Chat-v1.0-GGUF/resolve/main/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
    # Download: tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf
    ```
 
