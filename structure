@@ -1,0 +1,18 @@
+RAG_PROJECT/
+├── document_store.py      # Retrieval (R): Embeddings & Vector Search (FAISS)
+├── local_llm.py           # Generation (G): Local Model Handling (ctransformers)
+├── rag_models.py          # Data Classes: RetrievedDocument, RAGResponse
+├── rag_pipeline.py        # Orchestration: Connects DocumentStore & LocalLLM
+└── cli.py                 # User Interface: Command Line Chat Interface
+
+1. rag_models.py (Data Classes)
+This file holds the essential data structures used across the entire project.
+
+2. document_store.py (Retrieval Component)
+This handles all operations related to chunking, embedding, indexing, and searching.
+
+3. local_llm.py (Generation Component)
+This class handles the local language model for generating the final answer.
+
+4. rag_pipeline.py (Orchestration Component)
+This is the "brain" that connects retrieval and generation.
