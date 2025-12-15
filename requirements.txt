@@ -1,0 +1,6 @@
+numpy
+tqdm
+torch
+sentence-transformers
+faiss-cpu
+ctransformers
