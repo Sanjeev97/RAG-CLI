@@ -34,14 +34,14 @@ echo "✓ Virtual environment created"
 # Activate virtual environment
 echo ""
 echo "Activating virtual environment..."
-source venv/bin/activate
+source venv/Scripts/activate
 echo "✓ Virtual environment activated"
 
-# Upgrade pip
-echo ""
-echo "Upgrading pip..."
-pip install --upgrade pip --quiet
-echo "✓ pip upgraded"
+# # Upgrade pip
+# echo ""
+# echo "Upgrading pip..."
+# pip install --upgrade pip --quiet
+# echo "✓ pip upgraded"
 
 # Install dependencies
 echo ""
@@ -69,7 +69,7 @@ fi
 echo ""
 echo "Creating directories..."
 mkdir -p models
-mkdir -p data
+# mkdir -p data
 echo "✓ Directories created"
 
 # Download model

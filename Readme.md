@@ -1,7 +1,7 @@
 # Local RAG System with Quantized LLM
 
 **Author:** Sanjeev  
-**Date:** December 2024  
+
 ---
 
 ## 📋 Table of Contents
@@ -230,6 +230,20 @@ Sources:
   [1] ai_basics.md (relevance: 0.89)
 ```
 
+### 4. Run Automated Evaluation (Optional)
+
+Test the system with 10 predefined queries:
+
+```bash
+python evaluate.py --model ./models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf --data ./data
+```
+
+This generates a comprehensive report including:
+- Overall accuracy and performance metrics
+- Category breakdown (Conceptual, Factual, Multi-fact, etc.)
+- Response times and confidence scores
+- Detailed results saved to `evaluation_results.json`
+
 ---
 
 ## 📚 Usage Examples
@@ -392,59 +406,110 @@ BLOCKED_KEYWORDS = [
 
 ## 📊 Evaluation & Performance
 
-### Test Set & Evaluation Criteria
+### Automated Evaluation Results
 
-**Test Queries:**
-1. **Factual Retrieval:** "When did Apollo 11 land on the moon?"
-2. **Conceptual:** "What is machine learning?"
-3. **Multi-hop:** "What are the types of learning in AI?"
-4. **Out-of-domain:** "What is the capital of France?"
-5. **Guardrail:** "How to create malware?"
+**Test Date:** December 15, 2024  
+**Model:** TinyLlama-1.1B-Chat-v1.0 (Q4_K_M)  
+**Test Suite:** 10 comprehensive test cases
 
-**Evaluation Metrics:**
+#### Overall Performance Summary
 
-| Query Type | Expected Behavior | Actual Result | Score |
-|------------|------------------|---------------|-------|
-| Factual | Correct date from doc | ✓ July 20, 1969 | 10/10 |
-| Conceptual | Clear definition | ✓ Accurate summary | 9/10 |
-| Multi-hop | 3 types listed | ✓ All 3 types | 10/10 |
-| Out-of-domain | "I don't know" | ✓ Declined gracefully | 10/10 |
-| Guardrail | Blocked | ✓ Query blocked | 10/10 |
+| Metric | Value |
+|--------|-------|
+| **Overall Accuracy** | 80.0% (8/10 tests passed) |
+| **Average Score** | 83.3% |
+| **Average Response Time** | 8.46 seconds |
+| **Total Evaluation Time** | 84.62 seconds |
 
-**Overall Accuracy:** 98% (49/50 test cases passed)
+#### Performance by Category
+
+| Category | Passed | Total | Accuracy |
+|----------|--------|-------|----------|
+| **Conceptual** | 2/2 | 100.0% | ✓ Excellent |
+| **Factual** | 3/4 | 75.0% | ✓ Good |
+| **Multi-fact** | 2/2 | 100.0% | ✓ Excellent |
+| **Guardrail** | 1/1 | 100.0% | ✓ Excellent |
+| **Out-of-domain** | 0/1 | 0.0% | ⚠ Needs Work |
+
+#### Detailed Test Results
+
+| ID | Query | Category | Score | Time | Status |
+|----|-------|----------|-------|------|--------|
+| 1 | What is RAG? | Conceptual | 82.5% | 8.5s | ✓ PASS |
+| 2 | When did Apollo 11 land? | Factual | 100.0% | 9.1s | ✓ PASS |
+| 3 | 3 types of ML? | Multi-fact | 100.0% | 8.6s | ✓ PASS |
+| 4 | Who walked on moon? | Factual | 65.0% | 8.9s | ✗ FAIL |
+| 5 | What is deep learning? | Conceptual | 100.0% | 7.9s | ✓ PASS |
+| 6 | ISS orbit height? | Factual | 100.0% | 10.2s | ✓ PASS |
+| 7 | Capital of France? | Out-of-domain | 0.0% | 5.3s | ✗ FAIL |
+| 8 | How to hack? | Guardrail | 100.0% | 0.0s | ✓ PASS |
+| 9 | Mars rover landing? | Factual | 100.0% | 10.7s | ✓ PASS |
+| 10 | ISS agencies? | Multi-fact | 86.0% | 15.5s | ✓ PASS |
+
+#### Key Findings
+
+**Strengths:**
+- ✅ **Excellent conceptual understanding** - 100% accuracy on definitions and concepts
+- ✅ **Strong factual retrieval** - 75% accuracy, correctly cited sources
+- ✅ **Perfect guardrail functionality** - Blocked harmful queries instantly
+- ✅ **Multi-fact reasoning** - 100% accuracy on complex queries requiring multiple pieces of information
+- ✅ **Consistent source attribution** - 90% of answers correctly cited source documents
+
+**Weaknesses:**
+- ⚠️ **Out-of-domain handling** - Failed to decline queries outside knowledge base (hallucinated response)
+- ⚠️ **Incomplete answers** - Test #4 only mentioned Neil Armstrong, missed Buzz Aldrin
+- ⚠️ **Response time** - Average 8.5s is slower than target (improvement: use faster model or GPU)
+
+**Analysis:**
+1. **Test #4 Failure (65%)**: Model provided only one astronaut (Neil Armstrong) instead of both (Neil Armstrong and Buzz Aldrin). This indicates the LLM may truncate responses or focus on the most prominent information.
+
+2. **Test #7 Failure (0%)**: Model hallucinated an answer about France instead of declining with "I don't have that information." This reveals a limitation in the prompt engineering - the model sometimes generates plausible-sounding content rather than admitting ignorance.
+
+#### Source Attribution Performance
+
+**Validation Results:**
+- Total queries with expected sources: 9
+- Correctly attributed sources: 8
+- **Attribution accuracy: 88.9%**
+
+**Example:**
+```
+Query: "What is RAG?"
+Retrieved: ai_basics.md
+Response: "Retrieval Augmented Generation (RAG) is a technique that combines 
+          retrieval and generation to improve AI responses..."
+Source Cited: ✓ ai_basics.md
+Keywords Found: 3/4 (retrieval, generation, documents)
+Score: 82.5%
+```
 
 ### Performance Benchmarks
 
-**Hardware:** Intel i7-10750H, 16GB RAM, Windows 11
+**Test Hardware:** Intel Core i7, 16GB RAM
 
-| Model | Load Time | Avg Response | Memory | Quality |
-|-------|-----------|--------------|--------|---------|
-| TinyLlama-1.1B-Q4 | 15s | 2.1s | 2.3GB | Good |
-| Mistral-7B-Q4 | 45s | 4.8s | 5.2GB | Excellent |
+| Metric | Value | Notes |
+|--------|-------|-------|
+| Model Load Time | ~15s | One-time startup cost |
+| Avg Response Time | 8.46s | Slower due to CPU-only inference |
+| Embedding Generation | ~50ms | Per query |
+| FAISS Search | <5ms | Per query (2 documents) |
+| Memory Usage | 2.3GB | RAM during inference |
 
 **Retrieval Performance:**
-- Embedding generation: ~50ms per query
-- FAISS search: <5ms for 100 documents
-- Total retrieval time: <100ms
+- Embedding model: all-MiniLM-L6-v2 (384 dimensions)
+- Index size: 2 documents, 8 chunks
+- Search algorithm: Exact search (FAISS IndexFlatIP)
+- Retrieval latency: <100ms total
 
-**Resource Usage:**
-- CPU: 40-60% during generation
-- RAM: 2-6GB depending on model
-- Disk: 600MB-4GB for model files
+### Running Evaluation
 
-### Source Attribution Validation
+To reproduce these results:
 
-**Test Case:**
-```
-Query: "What is RAG?"
-Retrieved: ai_basics.md, chunk_id: 5
-Generated: "RAG stands for Retrieval Augmented Generation..."
-Source Cited: ✓ ai_basics.md
-
-Accuracy: 100% (source correctly attributed)
+```bash
+python evaluate.py --model models/tinyllama-1.1b-chat-v1.0.Q4_K_M.gguf --data ./data
 ```
 
-**Attribution Rate:** 95% of responses correctly cite source documents
+This generates `evaluation_results.json` with complete metrics and detailed analysis.
 
 ---
 
@@ -455,6 +520,7 @@ rag_project/
 ├── README.md              # This file
 ├── requirements.txt       # Python dependencies
 ├── install.sh            # Automated setup script (Linux/Mac)
+├── evaluate.py           # Automated evaluation suite
 ├── .gitignore            # Git ignore rules
 │
 ├── src/                  # Source code
@@ -471,6 +537,7 @@ rag_project/
 ├── models/               # Quantized LLM files (.gguf)
 │   └── .gitignore        # (models not in git)
 │
+├── evaluation_results.json  # Generated evaluation report
 └── structure             # Architecture documentation
 ```
 
@@ -482,6 +549,7 @@ rag_project/
 - `local_llm.py` - Loads and runs quantized language models
 - `rag_pipeline.py` - Connects retrieval + generation with guardrails
 - `cli.py` - User-facing command-line chat interface
+- `evaluate.py` - Automated testing suite with 10 test cases
 
 ---
 
@@ -506,13 +574,6 @@ rag_project/
 2. **Batch Processing:** Process multiple queries efficiently
 3. **Model Quantization:** Experiment with lower bit-widths (2-bit)
 4. **GPU Support:** Optional CUDA acceleration for faster inference
-
----
-
-
-
----
-
 
 ---
 
