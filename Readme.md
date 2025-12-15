@@ -631,9 +631,9 @@ rag_project/
 - `document_store.py` - Handles document indexing and vector search
 - `local_llm.py` - Loads and runs quantized language models
 - `rag_pipeline.py` - Connects retrieval + generation with guardrails
-- `rag_pipeline_enhanced.py` - **Enhanced with query reformulation**
+- `rag_pipeline_enhanced.py` - Enhanced with query reformulation
 - `cli.py` - User-facing command-line chat interface
-- `cli_enhanced.py` - **Enhanced CLI with clarification features**
+- `cli_enhanced.py` - Enhanced CLI with clarification features
 - `evaluate.py` - Automated testing suite with 10 test cases
 
 **Documentation:**
