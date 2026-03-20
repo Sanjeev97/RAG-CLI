@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="title">Local RAG Web App</div>
+      <div class="status" id="status">Idle</div>
+    </header>
+    <div class="grid">
+      <div class="panel">
+        <div class="row auto-config">
+          <label>Model (.gguf)</label>
+          <input id="modelPath" type="text" value="{{ default_model_path }}" placeholder="C:\\path\\to\\model.gguf" />
+        </div>
+        <div class="row auto-config">
+          <label>Data folder</label>
+          <input id="dataDir" type="text" value="{{ default_data_dir }}" placeholder="C:\\path\\to\\data" />
+        </div>
+        <div class="row setup-controls">
+          <label>Options</label>
+          <div class="small">
+            <div><input id="showSources" type="checkbox" checked /> Show sources (server-side /sources)</div>
+          </div>
+        </div>
+        <div class="row setup-controls">
+          <button class="primary" id="btnInit">Load & Start</button>
+          <button class="danger" id="btnStop" disabled>Stop</button>
+        </div>
+        <div class="small" style="margin-top: 10px;">
+          <div><b>Commands</b></div>
+          <div>/help, /sources, /quit</div>
+        </div>
+      </div>
+
+      <div class="panel chat">
+        <div id="log"></div>
+        <div class="footer">
+          <textarea id="query" placeholder="Type your question and press Enter..."></textarea>
+          <div class="spacer"></div>
+          <button id="btnSend" class="primary" disabled>Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
+

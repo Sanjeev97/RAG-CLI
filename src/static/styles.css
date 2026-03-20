@@ -1,0 +1,31 @@
+:root { --bg: #0b1220; --panel: #111a2e; --text: #e6edf3; --muted: #9fb3c8; --accent: #3b82f6; --danger: #ef4444; --ok: #22c55e; }
+body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--text); }
+.wrap { display: grid; grid-template-rows: auto 1fr auto; gap: 10px; height: 100vh; padding: 14px; box-sizing: border-box; }
+header { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px; background: var(--panel); border-radius: 10px; }
+header .title { font-weight: 700; }
+.grid { display: grid; grid-template-columns: 360px 1fr; gap: 12px; min-height: 0; }
+.panel { background: var(--panel); border-radius: 10px; padding: 12px; min-height: 0; }
+.row { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
+label { color: var(--muted); font-size: 13px; width: 120px; flex: 0 0 auto; }
+input[type="text"], textarea { width: 100%; padding: 9px 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.04); color: var(--text); }
+button { padding: 9px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: var(--text); cursor: pointer; }
+button.primary { border-color: rgba(59,130,246,0.6); background: rgba(59,130,246,0.2); }
+button.danger { border-color: rgba(239,68,68,0.6); background: rgba(239,68,68,0.15); }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+.chat { display: flex; flex-direction: column; gap: 10px; }
+.status { color: var(--muted); font-size: 13px; }
+#log { flex: 1; overflow: auto; background: rgba(255,255,255,0.03); border-radius: 10px; padding: 12px; }
+.msg { margin: 10px 0; white-space: pre-wrap; line-height: 1.35; }
+.msg.user { color: var(--accent); }
+.msg.assistant { color: var(--ok); }
+.msg.system { color: var(--muted); }
+.sources { margin-top: 8px; padding-left: 14px; border-left: 3px solid rgba(106,27,154,0.5); color: var(--muted); font-size: 13px; }
+.confidence { margin-top: 6px; color: var(--muted); font-size: 13px; }
+.bar { display: inline-block; vertical-align: middle; letter-spacing: 0.5px; }
+.small { font-size: 13px; color: var(--muted); }
+textarea { min-height: 38px; max-height: 120px; resize: vertical; }
+.footer { display: flex; gap: 10px; align-items: center; }
+.footer .spacer { flex: 1; }
+.auto-config { display: none; }
+.setup-controls { display: none; }
+
