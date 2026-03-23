@@ -7,10 +7,14 @@ const queryEl = document.getElementById('query');
 const btnSendEl = document.getElementById('btnSend');
 const btnInitEl = document.getElementById('btnInit');
 const btnStopEl = document.getElementById('btnStop');
+const introOverlayEl = document.getElementById('introOverlay');
+const usernameInputEl = document.getElementById('usernameInput');
+const btnStartChatEl = document.getElementById('btnStartChat');
 
 let initJobId = null;
 let chatJobId = null;
 let pipelineReady = false;
+let username = '';
 
 function setStatus(text){ statusEl.textContent = text; }
 
@@ -59,7 +63,7 @@ async function waitInit(){
     }
     if(data.status === 'done'){
       pipelineReady = true;
-      btnSendEl.disabled = false;
+      btnSendEl.disabled = !username;
       btnInitEl.disabled = true;
       btnStopEl.disabled = false;
       setStatus('Ready');
@@ -166,12 +170,19 @@ async function startInit(){
 async function startChat(){
   const query = queryEl.value.trim();
   if(!query) return;
-  if(!pipelineReady){ alert('Initialize the system first'); return; }
+  if(!username){
+    appendMsg('Please enter a username first.', 'system');
+    return;
+  }
+  if(!pipelineReady){
+    appendMsg('System is still initializing. Please wait...', 'system');
+    return;
+  }
   if(chatJobId) return;
 
   btnSendEl.disabled = true;
   setStatus('Thinking...');
-  appendMsg('You: ' + query, 'user');
+  appendMsg(username + ': ' + query, 'user');
   queryEl.value = '';
 
   const r = await fetch('/api/chat', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ query }) });
@@ -203,8 +214,31 @@ btnStopEl.addEventListener('click', () => {
   setStatus('Idle');
 });
 
+function startWithUsername(){
+  const candidate = (usernameInputEl.value || '').trim();
+  if(!candidate){
+    usernameInputEl.focus();
+    return;
+  }
+  username = candidate;
+  introOverlayEl.classList.add('hidden');
+  queryEl.placeholder = `Ask anything, ${username}...`;
+  btnSendEl.disabled = !pipelineReady;
+  appendMsg(`Welcome, ${username}.`, 'system');
+  queryEl.focus();
+}
+
+btnStartChatEl.addEventListener('click', startWithUsername);
+usernameInputEl.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    startWithUsername();
+  }
+});
+
 appendMsg('Local RAG Web UI loaded.', 'system');
 appendMsg('Auto-initializing RAG system...', 'system');
 appendMsg('Tip: commands like /help are supported.', 'system');
+btnSendEl.disabled = true;
 startInit();
 

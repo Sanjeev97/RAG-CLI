@@ -5,3 +5,4 @@ faiss-cpu==1.13.1
 ctransformers==0.2.27
 tqdm==4.67.1
 Flask
+PyPDF2

@@ -67,7 +67,7 @@ Just type your question and press Enter!
 
 def load_documents(data_dir: str):
     """
-    Load all .txt and .md files from a directory.
+    Load all .txt, .md, and .pdf files from a directory.
     
     Returns:
         texts: List of file contents
@@ -78,21 +78,47 @@ def load_documents(data_dir: str):
     
     print(f"\nLoading documents from: {data_dir}")
     
-    for filename in os.listdir(data_dir):
-        # Only load text and markdown files
-        if filename.endswith(('.txt', '.md')):
-            filepath = os.path.join(data_dir, filename)
-            
+    def _load_pdf_text(pdf_path: str) -> str:
+        try:
+            from PyPDF2 import PdfReader
+        except ImportError as e:
+            raise RuntimeError("PyPDF2 is required for .pdf support. Run: pip install PyPDF2") from e
+
+        reader = PdfReader(pdf_path)
+        parts: list[str] = []
+        for page in reader.pages:
             try:
-                with open(filepath, 'r', encoding='utf-8') as f:
+                page_text = page.extract_text() or ""
+            except Exception:
+                page_text = ""
+            if page_text.strip():
+                parts.append(page_text.strip())
+        return "\n\n".join(parts)
+
+    for filename in os.listdir(data_dir):
+        filename_lower = filename.lower()
+        if not filename_lower.endswith((".txt", ".md", ".pdf")):
+            continue
+
+        filepath = os.path.join(data_dir, filename)
+
+        try:
+            if filename_lower.endswith((".txt", ".md")):
+                with open(filepath, "r", encoding="utf-8") as f:
                     content = f.read()
-                
-                texts.append(content)
-                sources.append(filename)
-                print(f"  ✓ Loaded: {filename}")
-                
-            except Exception as e:
-                print(f"  ✗ Error loading {filename}: {e}")
+            else:
+                content = _load_pdf_text(filepath)
+
+            if not content.strip():
+                print(f"  ! Skipped (no extractable text): {filename}")
+                continue
+
+            texts.append(content)
+            sources.append(filename)
+            print(f"  Loaded: {filename}")
+
+        except Exception as e:
+            print(f"  Error loading {filename}: {e}")
     
     return texts, sources
 
@@ -149,7 +175,7 @@ def main():
     
     if not texts:
         print_color("\nError: No documents found!", Colors.RED)
-        print("Make sure you have .txt or .md files in your data folder.")
+        print("Make sure you have .txt, .md, or .pdf files in your data folder.")
         sys.exit(1)
     
     # Add documents to store
@@ -162,7 +188,7 @@ def main():
     # Create the pipeline
     pipeline = RAGPipeline(doc_store, llm)
     
-    print_color("\n✓ System ready!\n", Colors.GREEN)
+    print_color("\nSystem ready!\n", Colors.GREEN)
     print_help()
     
     # Settings

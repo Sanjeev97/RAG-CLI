@@ -28,4 +28,9 @@ textarea { min-height: 38px; max-height: 120px; resize: vertical; }
 .footer .spacer { flex: 1; }
 .auto-config { display: none; }
 .setup-controls { display: none; }
+.overlay { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(5,10,18,0.86); z-index: 999; }
+.overlay.hidden { display: none; }
+.overlay-card { width: min(420px, 92vw); background: var(--panel); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.overlay-card h2 { margin: 0; font-size: 22px; }
+.overlay-card p { margin: 0 0 4px 0; color: var(--muted); font-size: 14px; }
 
